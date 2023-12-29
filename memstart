@@ -1,0 +1,53 @@
+from PIL import Image, ImageDraw, ImageFont
+
+# Функция для создания мема
+def create_meme(top_text, bottom_text, image_path, output_path):
+    try:
+        # Загружаем изображение
+        img = Image.open(image_path)
+        draw = ImageDraw.Draw(img)
+
+        # Загружаем шрифт (замените путь на путь к вашему шрифту)
+        font_path = "path/to/your/font.ttf"
+        font = ImageFont.truetype(font_path, size=40)
+
+        # Устанавливаем цвет и размер шрифта
+        text_color = "white"
+        outline_color = "black"
+
+        # Определяем координаты текста
+        width, height = img.size
+        text = top_text.upper()
+        text_width, text_height = draw.textsize(text, font=font)
+        text_x = (width - text_width) / 2
+        text_y = 10
+
+        # Рисуем текст наверху
+        draw.text((text_x - 2, text_y - 2), text, font=font, fill=outline_color)
+        draw.text((text_x + 2, text_y - 2), text, font=font, fill=outline_color)
+        draw.text((text_x + 2, text_y + 2), text, font=font, fill=outline_color)
+        draw.text((text_x - 2, text_y + 2), text, font=font, fill=outline_color)
+        draw.text((text_x, text_y), text, font=font, fill=text_color)
+
+        # Повторяем для текста снизу
+        text = bottom_text.upper()
+        text_width, text_height = draw.textsize(text, font=font)
+        text_x = (width - text_width) / 2
+        text_y = height - text_height - 10
+
+        # Рисуем текст внизу
+        draw.text((text_x - 2, text_y - 2), text, font=font, fill=outline_color)
+        draw.text((text_x + 2, text_y - 2), text, font=font, fill=outline_color)
+        draw.text((text_x + 2, text_y + 2), text, font=font, fill=outline_color)
+        draw.text((text_x - 2, text_y + 2), text, font=font, fill=outline_color)
+        draw.text((text_x, text_y), text, font=font, fill=text_color)
+
+        # Сохраняем изображение с текстом
+        img.save(output_path)
+        print(f"Мем успешно создан: {output_path}")
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+# Пример использования функции create_meme
+create_meme("Вверхний текст", "Нижний текст", "path/to/your/image.jpg", "output/path/meme.jpg")
